@@ -46,6 +46,10 @@ prog
 		'Path to custom HTML template (default "src/template.html")'
 	)
 	.option(
+		'--renderToString',
+		'Path to custom JS rendering function'
+	)
+	.option(
 		'--preload',
 		'Adds preload links to the HTML for required resources',
 		false
@@ -105,6 +109,10 @@ prog
 	.option('--cert', 'Path to custom SSL certificate')
 	.option('--cacert', 'Path to optional CA certificate override')
 	.option('--prerender', 'Render route(s) into static HTML (first run only)')
+	.option(
+		'--renderToString',
+		'Path to custom JS rendering function'
+	)
 	.option(
 		'--prerenderUrls',
 		'Path to prerendered routes config',

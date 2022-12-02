@@ -191,6 +191,17 @@ describe('preact build', () => {
 		);
 	});
 
+	describe('ssr', () => {
+		it('customRenderFunction', async () => {
+			let dir = await subject('custom-render');
+
+			await build(dir, {renderToString: './render.js'});
+
+			const html = await getOutputFile(dir, 'index.html');
+			expect(html).toContain('!Hi from custom render!');
+		});
+	});
+
 	describe('CLI Options', () => {
 		it('--src', async () => {
 			let dir = await subject('minimal');

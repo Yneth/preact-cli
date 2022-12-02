@@ -5,7 +5,7 @@ const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plug
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const prerender = require('./prerender');
 const createLoadManifest = require('./create-load-manifest');
-const { esmImport, tryResolveConfig, warn } = require('../../util');
+const { esmImport, tryResolveConfig, warn, info } = require('../../util');
 
 const PREACT_FALLBACK_URL = '/200.html';
 
@@ -28,6 +28,21 @@ module.exports = async function (config) {
 		if (existsSync(templatePathFromArg)) template = templatePathFromArg;
 		else {
 			warn(`Template not found at ${templatePathFromArg}`);
+		}
+	}
+
+	let renderToString = null;
+	if (config.renderToString) {
+		const customRenderToStringPath = resolve(cwd, config.renderToString);
+		if (existsSync(customRenderToStringPath)) {
+			info(`using custom renderToString ${config.renderToString}`);
+			renderToString = require(require.resolve(customRenderToStringPath, {
+				paths: [cwd],
+			}));
+		} else {
+			warn(
+				`Custom renderToString module not found at ${customRenderToStringPath}`
+			);
 		}
 	}
 
@@ -95,7 +110,7 @@ module.exports = async function (config) {
 			url,
 			ssr() {
 				return config.prerender && url !== PREACT_FALLBACK_URL
-					? prerender({ cwd, dest, src }, values)
+					? prerender({ cwd, dest, src, renderToString }, values)
 					: '';
 			},
 			scriptLoading: 'defer',

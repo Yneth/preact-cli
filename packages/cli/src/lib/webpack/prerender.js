@@ -8,6 +8,7 @@ const { SourceMapConsumer } = require('source-map');
 module.exports = function (env, params) {
 	params = params || {};
 
+	const { cwd } = env;
 	let entry = resolve(env.dest, './ssr-build/ssr-bundle.js');
 	let url = params.url || '/';
 
@@ -25,12 +26,18 @@ module.exports = function (env, params) {
 			);
 			return '';
 		}
-		const { cwd } = env;
-		const preact = require(require.resolve('preact', { paths: [cwd] }));
-		const renderToString = require(require.resolve('preact-render-to-string', {
-			paths: [cwd],
-		}));
-		return renderToString(preact.h(app, { ...params, url }));
+		if (env.renderToString) {
+			return env.renderToString({ cwd }, app, { ...params, url });
+		} else {
+			const preact = require(require.resolve('preact', { paths: [cwd] }));
+			const renderToString = require(require.resolve(
+				'preact-render-to-string',
+				{
+					paths: [cwd],
+				}
+			));
+			return renderToString(preact.h(app, { ...params, url }));
+		}
 	} catch (err) {
 		let stack = stackTrace.parse(err).filter(s => s.getFileName() === entry)[0];
 		if (!stack) {

@@ -119,6 +119,7 @@ $ preact build
     --babelConfig      Path to custom Babel config (default .babelrc)
     --json             Generate build stats for bundle analysis
     --template         Path to custom HTML template (default 'src/template.html')
+    --renderToString   Path to custom JS rendering function
     --preload          Adds preload tags to the document its assets  (default false)
     --analyze          Launch interactive Analyzer to inspect production bundle(s)
     --prerender        Renders route(s) into generated static HTML  (default true)
@@ -151,6 +152,7 @@ $ preact watch
     --prerender        Pre-render static content on first run
     --prerenderUrls    Path to pre-rendered routes config  (default prerender-urls.json)
     --template         Path to custom HTML template (default 'src/template.html')
+    --renderToString   Path to custom JS rendering function
     --refresh          Enables experimental preact-refresh functionality
     -c, --config       Path to custom CLI config  (default preact.config.js)
     -H, --host         Set server hostname  (default 0.0.0.0)
